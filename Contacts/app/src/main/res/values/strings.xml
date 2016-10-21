@@ -6,4 +6,5 @@
     <string name="yes">ДА</string>
     <string name="no">НЕТ</string>
     <string name="message">Номер будет перенесён в список удалённых</string>
+    <string name="message_restore">Номер будет восстановлен</string>
 </resources>

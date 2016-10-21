@@ -33,7 +33,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if(linksList != null) {
+        if (linksList != null) {
             String link = linksList.get(position);
             ((MyViewHolder) holder).clearImage();
             if (link != null) {
@@ -51,11 +51,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return linksList != null ? linksList.size() : 0;
     }
 
-    public void setLinksList(List<String> linksList){
+    public void setLinksList(List<String> linksList) {
         this.linksList = linksList;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
         public MyViewHolder(View itemView) {
@@ -63,7 +63,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             imageView = (ImageView) itemView.findViewById(R.id.img);
 
         }
-        public void bind(final String link){
+
+        public void bind(final String link) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -81,7 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
         }
 
-        public void clearImage(){
+        public void clearImage() {
             imageView.setImageResource(0);
             imageView.setImageDrawable(null);
             imageView.setImageURI(null);

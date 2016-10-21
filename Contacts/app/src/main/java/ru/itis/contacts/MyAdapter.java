@@ -28,18 +28,19 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((MyViewHolder) holder).bind(numbers.get(position));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final Contact contact = numbers.get(position);
+        ((MyViewHolder) holder).bind(contact);
         ((MyViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                someEventListener.onClick(numbers.get(position));
+                someEventListener.onClick(contact);
             }
         });
         ((MyViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                someEventListener.onLongClick(position, MyAdapter.this);
+                someEventListener.onLongClick(contact, MyAdapter.this);
                 return true;
             }
         });
@@ -54,7 +55,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface onSomeEventListener {
         public void onClick(Contact contact);
-        public void onLongClick(int position, MyAdapter adapter);
+        public void onLongClick(Contact contact, MyAdapter adapter);
     }
 
 }

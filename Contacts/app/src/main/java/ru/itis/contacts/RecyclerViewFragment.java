@@ -1,6 +1,6 @@
 package ru.itis.contacts;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,15 @@ public class RecyclerViewFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
     protected MyAdapter myAdapter;
     private MyAdapter.onSomeEventListener someEventListener;
+
+    public static RecyclerViewFragment newInstance(List<Contact> contacts) {
+
+        Bundle args = new Bundle();
+        args.putSerializable("contacts", (Serializable) contacts);
+        RecyclerViewFragment fragment = new RecyclerViewFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
