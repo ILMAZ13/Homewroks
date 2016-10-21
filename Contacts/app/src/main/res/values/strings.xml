@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Contacts</string>
+    <string name="number">Номер:</string>
+    <string name="btn_send">Отправить сообщение</string>
+    <string name="del_num">Удалить номер?</string>
+    <string name="yes">ДА</string>
+    <string name="no">НЕТ</string>
+    <string name="message">Номер будет перенесён в список удалённых</string>
+</resources>
