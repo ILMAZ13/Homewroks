@@ -1,5 +1,6 @@
 package ru.itis.contactsv2.adapters;
 
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,9 +23,11 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private List<Contact> contacts;
     private boolean isForDeleted;
     private FragmentManager manager;
+    private FragmentActivity activity;
 
-    public ContactsRecyclerViewAdapter(boolean isForDeleted, FragmentManager manager) {
-        this.manager = manager;
+    public ContactsRecyclerViewAdapter(boolean isForDeleted, FragmentActivity activity) {
+        this.activity = activity;
+        this.manager = activity.getSupportFragmentManager();
         this.isForDeleted = isForDeleted;
     }
 
@@ -67,9 +70,9 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private List<Contact> getContacts(boolean isForDeleted){
         if(isForDeleted){
-            return ContactsProvider.getInstance().getDeletedContactsList();
+            return ContactsProvider.getInstance().getDeletedContactsList(activity);
         } else {
-            return ContactsProvider.getInstance().getContactsList();
+            return ContactsProvider.getInstance().getContactsList(activity);
         }
     }
 

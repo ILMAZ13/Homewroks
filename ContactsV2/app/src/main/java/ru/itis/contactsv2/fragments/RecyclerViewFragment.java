@@ -38,7 +38,7 @@ public class RecyclerViewFragment extends Fragment implements Updatable{
         isForDeleted = getArguments().getBoolean("isForDeleted");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_contacts);
-        adapter = new ContactsRecyclerViewAdapter(isForDeleted, getActivity().getSupportFragmentManager());
+        adapter = new ContactsRecyclerViewAdapter(isForDeleted, getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 

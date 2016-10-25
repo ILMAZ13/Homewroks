@@ -54,21 +54,21 @@ public class DeletionDialogFragment extends DialogFragment implements DialogInte
         switch (which){
             case Dialog.BUTTON_POSITIVE:
                 if(contact.isDeleted()){
-                    List<Contact> contactList = ContactsProvider.getInstance().getContactsList();
-                    List<Contact> deletedContactList1 = ContactsProvider.getInstance().getDeletedContactsList();
+                    List<Contact> contactList = ContactsProvider.getInstance().getContactsList(getActivity());
+                    List<Contact> deletedContactList1 = ContactsProvider.getInstance().getDeletedContactsList(getActivity());
                     deletedContactList1.remove(contact);
                     contact.setDeleted(false);
                     contactList.add(contact);
-                    ContactsProvider.getInstance().saveContacts(contactList);
-                    ContactsProvider.getInstance().saveDeletedContacts(deletedContactList1);
+                    ContactsProvider.getInstance().saveContacts(contactList, getActivity());
+                    ContactsProvider.getInstance().saveDeletedContacts(deletedContactList1, getActivity());
                 } else {
-                    List<Contact> contactList = ContactsProvider.getInstance().getContactsList();
-                    List<Contact> deletedContactList1 = ContactsProvider.getInstance().getDeletedContactsList();
+                    List<Contact> contactList = ContactsProvider.getInstance().getContactsList(getActivity());
+                    List<Contact> deletedContactList1 = ContactsProvider.getInstance().getDeletedContactsList(getActivity());
                     contactList.remove(contact);
                     contact.setDeleted(true);
                     deletedContactList1.add(contact);
-                    ContactsProvider.getInstance().saveContacts(contactList);
-                    ContactsProvider.getInstance().saveDeletedContacts(deletedContactList1);
+                    ContactsProvider.getInstance().saveContacts(contactList, getActivity());
+                    ContactsProvider.getInstance().saveDeletedContacts(deletedContactList1, getActivity());
                 }
                 if(getActivity() instanceof ContactsActivity) {
                     ((ContactsActivity) getActivity()).getPagerAdapter().notifyDataSetChanged();
