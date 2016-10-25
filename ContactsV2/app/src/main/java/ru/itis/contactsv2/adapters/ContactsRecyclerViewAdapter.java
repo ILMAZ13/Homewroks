@@ -70,9 +70,9 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private List<Contact> getContacts(boolean isForDeleted){
         if(isForDeleted){
-            return ContactsProvider.getInstance().getDeletedContactsList(activity);
+            return ContactsProvider.getInstance(activity).getDeletedContactsList();
         } else {
-            return ContactsProvider.getInstance().getContactsList(activity);
+            return ContactsProvider.getInstance(activity).getContactsList();
         }
     }
 

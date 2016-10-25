@@ -2,9 +2,9 @@ package ru.itis.contactsv2.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
 import java.util.List;
 
@@ -54,21 +54,21 @@ public class DeletionDialogFragment extends DialogFragment implements DialogInte
         switch (which){
             case Dialog.BUTTON_POSITIVE:
                 if(contact.isDeleted()){
-                    List<Contact> contactList = ContactsProvider.getInstance().getContactsList(getActivity());
-                    List<Contact> deletedContactList1 = ContactsProvider.getInstance().getDeletedContactsList(getActivity());
+                    List<Contact> contactList = ContactsProvider.getInstance(getActivity()).getContactsList();
+                    List<Contact> deletedContactList1 = ContactsProvider.getInstance(getActivity()).getDeletedContactsList();
                     deletedContactList1.remove(contact);
                     contact.setDeleted(false);
                     contactList.add(contact);
-                    ContactsProvider.getInstance().saveContacts(contactList, getActivity());
-                    ContactsProvider.getInstance().saveDeletedContacts(deletedContactList1, getActivity());
+                    ContactsProvider.getInstance(getActivity()).saveContacts(contactList);
+                    ContactsProvider.getInstance(getActivity()).saveDeletedContacts(deletedContactList1);
                 } else {
-                    List<Contact> contactList = ContactsProvider.getInstance().getContactsList(getActivity());
-                    List<Contact> deletedContactList1 = ContactsProvider.getInstance().getDeletedContactsList(getActivity());
+                    List<Contact> contactList = ContactsProvider.getInstance(getActivity()).getContactsList();
+                    List<Contact> deletedContactList1 = ContactsProvider.getInstance(getActivity()).getDeletedContactsList();
                     contactList.remove(contact);
                     contact.setDeleted(true);
                     deletedContactList1.add(contact);
-                    ContactsProvider.getInstance().saveContacts(contactList, getActivity());
-                    ContactsProvider.getInstance().saveDeletedContacts(deletedContactList1, getActivity());
+                    ContactsProvider.getInstance(getActivity()).saveContacts(contactList);
+                    ContactsProvider.getInstance(getActivity()).saveDeletedContacts(deletedContactList1);
                 }
                 if(getActivity() instanceof ContactsActivity) {
                     ((ContactsActivity) getActivity()).getPagerAdapter().notifyDataSetChanged();

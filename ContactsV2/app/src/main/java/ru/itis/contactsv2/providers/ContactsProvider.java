@@ -22,18 +22,21 @@ public class ContactsProvider {
     private static final String CONTACTS_NAME = "contacts";
     private static final String DELETED_CONTACTS_NAME = "deletedContacts";
 
-    public static ContactsProvider getInstance() {
+    private Context context;
+
+    public static ContactsProvider getInstance(@NonNull Context context) {
         if (ourInstance == null) {
-            ourInstance = new ContactsProvider();
+            ourInstance = new ContactsProvider(context.getApplicationContext());
         }
         return ourInstance;
     }
 
-    private ContactsProvider() {
+    private ContactsProvider(@NonNull Context context) {
+        this.context = context;
     }
 
 
-    public List<Contact> getContactsList(@NonNull Context context){
+    public List<Contact> getContactsList(){
         SharedPreferences preferences = context.getSharedPreferences(CONTACTS_PREFERENCES, Context.MODE_PRIVATE);
         if(preferences.contains(CONTACTS_NAME)) {
             Gson gson = new Gson();
@@ -44,12 +47,12 @@ public class ContactsProvider {
         } else {
             List<Contact> contacts;
             contacts = generateContactsList();
-            saveContacts(contacts, context);
+            saveContacts(contacts);
             return contacts;
         }
     }
 
-    public List<Contact> getDeletedContactsList(@NonNull Context context){
+    public List<Contact> getDeletedContactsList(){
         SharedPreferences preferences = context.getSharedPreferences(CONTACTS_PREFERENCES, Context.MODE_PRIVATE);
         if(preferences.contains(DELETED_CONTACTS_NAME)) {
             Gson gson = new Gson();
@@ -60,12 +63,12 @@ public class ContactsProvider {
         } else {
             List<Contact> contacts;
             contacts = new LinkedList<>();
-            saveDeletedContacts(contacts, context);
+            saveDeletedContacts(contacts);
             return contacts;
         }
     }
 
-    public void saveContacts(List<Contact> contactList,@NonNull Context context){
+    public void saveContacts(List<Contact> contactList){
         SharedPreferences preferences = context.getSharedPreferences(CONTACTS_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
@@ -75,7 +78,7 @@ public class ContactsProvider {
         editor.commit();
     }
 
-    public void saveDeletedContacts(List<Contact> contactList,@NonNull Context context){
+    public void saveDeletedContacts(List<Contact> contactList){
         SharedPreferences preferences = context.getSharedPreferences(CONTACTS_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
