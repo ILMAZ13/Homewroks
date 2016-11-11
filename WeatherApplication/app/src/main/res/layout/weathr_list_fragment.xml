@@ -23,6 +23,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <View
+        android:id="@+id/gradientShadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/toolbar_shadow"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_collapseMode="pin"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_add"
         app:fabSize="mini"
