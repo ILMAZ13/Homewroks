@@ -40,12 +40,13 @@ public class CityAddListViewHolder extends RecyclerView.ViewHolder{
                     Toast.makeText(context, "City already exist", Toast.LENGTH_LONG).show();
                 } else {
                     if(city.getId() == 0){
-                        Toast.makeText(context, "Can't add this city, cause server problem", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Server problem, please, refresh and try to add again", Toast.LENGTH_LONG).show();
                     } else {
                         cityList.add(city);
                         CityProvider.getInstance().writeCitiesList(context, cityList);
                         Toast.makeText(context, "City added", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, WeatherListActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                 }
