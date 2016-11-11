@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">IlWeather</string>
+    <string name="write_your_city_name">Write your city name</string>
+</resources>
