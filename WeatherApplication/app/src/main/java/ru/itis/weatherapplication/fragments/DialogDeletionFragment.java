@@ -47,7 +47,7 @@ public class DialogDeletionFragment extends DialogFragment implements DialogInte
             CityProvider.getInstance().writeCitiesList(getActivity(), cities);
             Toast.makeText(getActivity(), "City deleted", Toast.LENGTH_SHORT).show();
             if(getActivity() instanceof WeatherListActivity){
-                ((WeatherListActivity) getActivity()).update();
+                ((WeatherListActivity) getActivity()).updateInformation();
             }
         }
     }

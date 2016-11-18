@@ -1,53 +1,56 @@
 package ru.itis.weatherapplication.fragments;
 
 
-import android.content.Intent;
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
-import ru.itis.weatherapplication.R;
-import ru.itis.weatherapplication.activities.CityAddActivity;
-import ru.itis.weatherapplication.adapters.WeatherListAdapter;
-import ru.itis.weatherapplication.async_tasks.WeatherUpdater;
 import ru.itis.weatherapplication.interfaces.AsyncTaskListener;
 import ru.itis.weatherapplication.weather_api.entities.one_day.City;
 import ru.itis.weatherapplication.weather_api.entities.one_day.MyWeather;
 import ru.itis.weatherapplication.weather_api.exceptions.NotLoadedException;
-import ru.itis.weatherapplication.weather_api.providers.CityProvider;
-import ru.itis.weatherapplication.weather_api.providers.WeatherProvider;
+import ru.itis.weatherapplication.weather_api.sevice.WeatherService;
 
 /**
  * Created by ilmaz on 03.11.16.
  */
 
-public class WeatherListFragment extends Fragment implements AsyncTaskListener {
-    private WeatherListAdapter mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private WeatherUpdater updater;
-    private FloatingActionButton mButtonAdd;
+public class WeatherListFragment extends Fragment{
+    private AsyncTaskListener listener;
+    private WeatherUpdater myTask;
 
-    public static WeatherListFragment newInstance() {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        attachListener(context);
+    }
 
-        Bundle args = new Bundle();
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        attachListener(activity);
+    }
 
-        WeatherListFragment fragment = new WeatherListFragment();
-        fragment.setArguments(args);
-        return fragment;
+    private void attachListener(Context context){
+        if(context instanceof AsyncTaskListener){
+            listener = (AsyncTaskListener) context;
+        }
+    }
+
+    public void startTask(List<City> cityList){
+        if(myTask == null){
+            myTask = new WeatherUpdater();
+            myTask.execute(cityList);
+        }
+    }
+
+    public boolean isRunning(){
+        return myTask!= null;
     }
 
     @Override
@@ -56,97 +59,49 @@ public class WeatherListFragment extends Fragment implements AsyncTaskListener {
         setRetainInstance(true);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.weathr_list_fragment, container, false);
-
-        fillToolbar(view);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.sr_refresh);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                updateInformation();
-            }
-        });
-
-        mAdapter = new WeatherListAdapter(getActivity(), getFragmentManager());
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mAdapter);
-
-        mButtonAdd = (FloatingActionButton) view.findViewById(R.id.btn_add);
-        mButtonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onAddClicked();
-            }
-        });
-
-        updateInformation();
-
-        return view;
-    }
-
-
-
-    private void onAddClicked() {
-        Intent intent = new Intent(getActivity(), CityAddActivity.class);
-        startActivity(intent);
-    }
-
-
-    private void fillToolbar(View view){
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.main_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.menu_refresh :
-                        updateInformation();
-                        break;
-                    case R.id.menu_add :
-                        onAddClicked();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
-
-    public void updateInformation(){
-        updater = new WeatherUpdater(this);
-        List<City> cityList = CityProvider.getInstance().getCitiesList(getActivity());
-        updater.execute(cityList);
-    }
-
-    public void notifyDataSetChanged(){
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onTaskStarted() {
-        mSwipeRefreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void onTaskFinished(MyWeather weather) {
-        mSwipeRefreshLayout.setRefreshing(false);
-        try {
-            WeatherProvider.getInstance().saveOneDayWeather(getActivity(), weather);
-            notifyDataSetChanged();
-        } catch (NotLoadedException e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public void onDetach() {
-        if(updater != null){
-            if(updater.cancel(true));
-        }
         super.onDetach();
+        listener = null;
+    }
+
+    private class WeatherUpdater extends AsyncTask<List<City>, Void, MyWeather> {
+
+        @Override
+        protected void onPreExecute() {
+            if(listener != null){
+                listener.onTaskStarted();
+            }
+        }
+
+        @Override
+        protected MyWeather doInBackground(List<City>... params) {
+            MyWeather weather;
+            try {
+                weather = WeatherService.getAllWeatherDataAboutCities(params[0]);
+                if(weather == null){
+                    weather = new MyWeather(new NotLoadedException("Can`t load from server"));
+                }
+//            TimeUnit.SECONDS.sleep(5);
+            } catch (Exception e) {
+                weather = new MyWeather(new NotLoadedException("Can`t load from server"));
+            }
+            return weather;
+        }
+
+        @Override
+        protected void onPostExecute(MyWeather weather) {
+            myTask = null;
+            if(listener != null){
+                listener.onTaskFinished(weather);
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            myTask = null;
+        }
     }
 }
+
+
