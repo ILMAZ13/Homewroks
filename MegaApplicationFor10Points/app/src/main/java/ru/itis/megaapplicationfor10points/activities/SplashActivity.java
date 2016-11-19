@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 
 import ru.itis.megaapplicationfor10points.R;
 import ru.itis.megaapplicationfor10points.interfaces.TaskGettable;
@@ -14,7 +13,6 @@ import ru.itis.megaapplicationfor10points.tasks.SomeStupidTask;
 
 public class SplashActivity extends AppCompatActivity implements TaskListener, TaskGettable{
     private final String TAG = "splash";
-    private ProgressBar pbSplash;
 
 
     @Override
@@ -22,7 +20,6 @@ public class SplashActivity extends AppCompatActivity implements TaskListener, T
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        pbSplash = (ProgressBar) findViewById(R.id.pb_splash);
         getTask().startTask();
     }
 

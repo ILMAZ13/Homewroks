@@ -14,7 +14,8 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"/>
+            android:layout_height="?android:actionBarSize"
+            app:titleTextColor="#0000FF"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -41,13 +42,19 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/et_text"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/linearLayout"
-            android:layout_below="@+id/textInputLayout"
-            android:hint="@string/text" />
+            android:layout_below="@+id/textInputLayout">
+
+            <EditText
+                android:id="@+id/et_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text" />
+
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/linearLayout"
