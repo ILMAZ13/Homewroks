@@ -9,15 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.List;
 
 import ru.itis.megaapplicationfor10points.R;
 import ru.itis.megaapplicationfor10points.activities.EditActivity;
-import ru.itis.megaapplicationfor10points.activities.ListActivity;
 import ru.itis.megaapplicationfor10points.entities.Notification;
-import ru.itis.megaapplicationfor10points.providers.NotificationProvider;
 
 /**
  * Created by ilmaz on 19.11.16.
@@ -51,44 +46,26 @@ public class InformationFragment extends Fragment {
         tvText = (TextView) view.findViewById(R.id.tv_text);
         button = (Button) view.findViewById(R.id.btn_edit);
 
-        fillInformation();
+        fillInformation(notification);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditActivity.class);
                 intent.putExtra("notification", notification);
-                startActivityForResult(intent, position);
+                getActivity().startActivityForResult(intent, position);
             }
         });
 
         return view;
     }
 
-    private void fillInformation() {
+    public void fillInformation(Notification notification) {
         if(notification != null) {
             tvTitle.setText(notification.title);
             tvText.setText(notification.text);
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == EditActivity.EDITED_KEY){
-            Notification notification = (Notification) data.getSerializableExtra("notification");
-            if(notification != null){
-                List<Notification>  notifications = NotificationProvider.getInstance().getNotificationList(getActivity());
-                notifications.get(requestCode).text = notification.text;
-                notifications.get(requestCode).title = notification.title;
-                NotificationProvider.getInstance().writeNotificationList(getActivity(), notifications);
-                this.notification = notification;
-                fillInformation();
-                if(getActivity() instanceof ListActivity){
-                    ((ListActivity) getActivity()).notifyDataSetChanged();
-                }
-                Toast.makeText(getActivity(), "Notification changed", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+
 }
