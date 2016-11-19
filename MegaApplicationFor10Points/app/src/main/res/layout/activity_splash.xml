@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.itis.megaapplicationfor10points.activities.SplashActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:src="@drawable/splash"
+        android:scaleType="centerCrop" />
+
+    <ProgressBar
+        android:id="@+id/pb_splash"
+        android:layout_gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="visible"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:indeterminate="true" />
+
+</android.support.design.widget.CoordinatorLayout>
