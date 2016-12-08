@@ -38,7 +38,9 @@ public class CodeVerificationActivity extends AppCompatActivity implements TaskL
         String number = getIntent().getStringExtra("number");
         textView.setText("На ваш номер (" + number + ") был выслан код подтверждения,\n введите его в это поле");
 
-
+        if(getConnectionTask(TAG).isRunning()){
+            onTaskStart();
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
