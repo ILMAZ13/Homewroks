@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AviNews</string>
+    <string name="phone_number">Enter your phone number:</string>
+    <string name="sign_in">Вход</string>
+    <string name="rules">Вы пока не являетесь обладателем премиум аккаунта. Вам предоставляется пробный период: 7 дней, после истечения которых, многие функциии будут урезаны. Вы в любой момент можете купить премиум аккаунтна главной странице. \n Нажимая Продолжить, вы соглашаетесь с данными условиями.\n Приятного использования!</string>
+    <string name="contiue">Продолжить</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
