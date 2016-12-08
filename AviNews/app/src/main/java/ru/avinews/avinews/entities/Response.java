@@ -6,4 +6,7 @@ package ru.avinews.avinews.entities;
 
 public class Response {
     public boolean success;
+    public int error_code;
+    public String error_message;
+    public String data;
 }

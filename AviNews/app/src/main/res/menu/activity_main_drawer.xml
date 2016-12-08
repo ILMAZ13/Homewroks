@@ -3,17 +3,27 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_nav_newspaper"
+            android:title="Новости" />
+        <item
+            android:id="@+id/nav_popular_news"
+            android:icon="@drawable/ic_nav_star"
+            android:title="Популярное" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Настройки">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_tags"
+                android:icon="@drawable/ic_nav_tags"
+                android:title="Мои тэги" />
+
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_nav_settings"
+                android:title="Настройки профиля" />
+
         </menu>
     </item>
 

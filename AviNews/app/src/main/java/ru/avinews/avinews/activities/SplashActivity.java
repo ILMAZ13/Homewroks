@@ -67,7 +67,6 @@ public class SplashActivity extends AppCompatActivity implements TaskListener{
                 startActivity(intent);
                 finish();
             } else {
-                // TODO: 08.12.16 add saving phone number to pref
                 Intent intent = new Intent(this, RulesActivity.class);
                 intent.putExtra("number", editText.getText().toString());
                 startActivity(intent);

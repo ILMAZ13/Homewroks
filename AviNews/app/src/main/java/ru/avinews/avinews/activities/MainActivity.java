@@ -1,5 +1,6 @@
 package ru.avinews.avinews.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,15 +13,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import ru.avinews.avinews.R;
+import ru.avinews.avinews.fragments.NewsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_news);
+        startNewsItem();
+
     }
 
     @Override
@@ -73,14 +79,37 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
+        if (id == R.id.nav_news) {
+            startNewsItem();
+        } else if (id == R.id.nav_popular_news) {
+            startPopularNewsItem();
+        } else if (id == R.id.nav_tags) {
+            Intent intent = new Intent(this, TagListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, UserConfigActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void startPopularNewsItem() {
+        getSupportActionBar().setTitle("Популярное");
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, NewsFragment.newInstance())
+                .commit();
+    }
+
+    private void startNewsItem() {
+        getSupportActionBar().setTitle("Новости");
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, NewsFragment.newInstance())
+                .commit();
+    }
+
 }

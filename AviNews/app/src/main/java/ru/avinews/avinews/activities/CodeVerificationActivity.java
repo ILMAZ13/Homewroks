@@ -65,11 +65,12 @@ public class CodeVerificationActivity extends AppCompatActivity implements TaskL
         button.setVisibility(View.VISIBLE);
         if(response != null){
             if(response.success){
+                // TODO: 08.12.16 add number saving
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-                // TODO: 08.12.16 add toast with error
+                Toast.makeText(this, response.error_message, Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show();
