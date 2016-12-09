@@ -64,6 +64,7 @@ public class SplashActivity extends AppCompatActivity implements TaskListener{
             if(response.success){
                 Intent intent = new Intent(this, CodeVerificationActivity.class);
                 intent.putExtra("number", editText.getText().toString());
+                intent.putExtra("registered", true);
                 startActivity(intent);
                 finish();
             } else {

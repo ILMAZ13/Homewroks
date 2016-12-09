@@ -34,6 +34,7 @@ public class RulesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(RulesActivity.this, CodeVerificationActivity.class);
                 intent.putExtra("number", number);
+                intent.putExtra("registered", false);
                 startActivity(intent);
                 finish();
             }

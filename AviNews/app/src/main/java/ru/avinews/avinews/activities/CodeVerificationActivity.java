@@ -22,6 +22,7 @@ public class CodeVerificationActivity extends AppCompatActivity implements TaskL
     private EditText editText;
     private Button button;
     private ProgressBar progressBar;
+    private boolean registered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,10 @@ public class CodeVerificationActivity extends AppCompatActivity implements TaskL
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         String number = getIntent().getStringExtra("number");
-        textView.setText("На ваш номер (" + number + ") был выслан код подтверждения,\n введите его в это поле");
+        registered = getIntent().getBooleanExtra("registered", false);
+        textView.setText("На ваш номер (" + number + ") был выслан код подтверждения, введите его в это поле");
 
-        if(getConnectionTask(TAG).isRunning()){
+        if (getConnectionTask(TAG).isRunning()) {
             onTaskStart();
         }
 
@@ -63,11 +65,16 @@ public class CodeVerificationActivity extends AppCompatActivity implements TaskL
     public void onTaskFinish(Response response) {
         progressBar.setVisibility(View.GONE);
         button.setVisibility(View.VISIBLE);
-        if(response != null){
-            if(response.success){
+        if (response != null) {
+            if (response.success) {
                 // TODO: 08.12.16 add number saving
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                if (registered) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, UserConfigActivity.class);
+                    startActivity(intent);
+                }
                 finish();
             } else {
                 Toast.makeText(this, response.error_message, Toast.LENGTH_SHORT).show();
@@ -77,9 +84,9 @@ public class CodeVerificationActivity extends AppCompatActivity implements TaskL
         }
     }
 
-    public ServerConnectionTask getConnectionTask(String tag){
+    public ServerConnectionTask getConnectionTask(String tag) {
         ServerConnectionTask task = (ServerConnectionTask) getSupportFragmentManager().findFragmentByTag(ServerConnectionTask.class.getName() + tag);
-        if(task == null){
+        if (task == null) {
             task = new ServerConnectionTask();
             getSupportFragmentManager()
                     .beginTransaction()
